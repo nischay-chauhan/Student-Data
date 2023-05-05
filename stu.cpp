@@ -1,9 +1,10 @@
-// #include <iostream>
-// #include <fstream>
-// #include <vector>
-// #include <string>
-// #include <cstdlib>
-#include<bits/stdc++.h>
+#include <iostream>
+#include <fstream>
+#include <vector>
+#include <string>
+#include <cstdlib>
+
+// #include<bits/stdc++.h>
 
 using namespace std;
 
@@ -35,24 +36,44 @@ void addStudent(vector<Student>& students) {
     cout << "Student added successfully!" << endl;
 }
 
+// Function to display students whose name contains a search string
+bool displayStudents(vector<Student>& students, string searchName = "") {
+    if (students.empty()) {
+        cout << "No students found." << endl;
+        return -1;
+    }
 
+    cout << "List of students:" << endl;
 
-// Function to display all students in the list
-void displayStudents(vector<Student>& students) {
+    for (const auto& student : students) {
+        if (searchName.empty() || student.name.find(searchName) != string::npos) {
+            cout << "Name: " << student.name << endl;
+            cout << "Age: " << student.age << endl;
+            cout << "Major: " << student.major << endl;
+            cout << endl;
+        }
+    }
+}
+
+// Function to search for a student by name
+// Function to search for a student by name
+void searchStudent(vector<Student>& students) {
     if (students.empty()) {
         cout << "No students found." << endl;
         return;
     }
 
-    cout << "List of all students:" << endl;
+    string searchName;
+    cout << "Enter student name to search for: ";
+    cin.ignore(); // ignore newline character in input buffer
+    getline(cin, searchName);
 
-    for (const auto& student : students) {
-        cout << "Name: " << student.name << endl;
-        cout << "Age: " << student.age << endl;
-        cout << "Major: " << student.major << endl;
-        cout << endl;
+    if (!displayStudents(students, searchName)) {
+        cout << "No such student." << endl;
     }
 }
+
+
 
 // Function to save the list of students to a file
 void saveToFile(vector<Student>& students, string fileName) {
@@ -73,7 +94,7 @@ void saveToFile(vector<Student>& students, string fileName) {
 }
 
 // Function to load a list of students from a file
-void loadFromFile(vector<Student>& students, string fileName) {
+void loadFromFile(vector<Student>& students, string fileName) { 
     ifstream inFile(fileName);
 
     if (!inFile) {
@@ -114,38 +135,42 @@ int main() {
     // Load any existing student data from file
     loadFromFile(students, fileName);
 
-    while (true) {
-        // Display menu options
-        cout << "Menu:" << endl;
-        cout << "1. Add new student" << endl;
-        cout << "2. Display all students" << endl;
-        cout << "3. Save student data to file" << endl;
-       cout << "4. Quit" << endl;
+   while (true) {
+    // Display menu options
+    cout << "Menu:" << endl;
+    cout << "1. Add new student" << endl;
+    cout << "2. Display all students" << endl;
+    cout << "3. Search for a student by name" << endl;
+    cout << "4. Save student data to file" << endl;
+    cout << "5. Quit" << endl;
 
-        int choice;
-        cout << "Enter your choice: ";
-        cin >> choice;
+    int choice;
+    cout << "Enter your choice: ";
+    cin >> choice;
 
-        switch (choice) {
-            case 1:
-                addStudent(students);
-                break;
-            case 2:
-                displayStudents(students);
-                break;
-            case 3:
-                saveToFile(students, fileName);
-                break;
-            case 4:
-                // Save any new student data to file before quitting
-                saveToFile(students, fileName);
-                cout << "Goodbye!" << endl;
-                return 0;
-            default:
-                cout << "Invalid choice. Please try again." << endl;
-                break;
-        }
+    switch (choice) {
+        case 1:
+            addStudent(students);
+            break;
+        case 2:
+            displayStudents(students);
+            break;
+        case 3:
+            searchStudent(students);
+            break;
+        case 4:
+            saveToFile(students, fileName);
+            break;
+        case 5:
+            // Save any new student data to file before quitting
+            saveToFile(students, fileName);
+            cout << "Goodbye!" << endl;
+            return 0;
+        default:
+            cout << "Invalid choice. Please try again." << endl;
+            break;
     }
+}
 
     return 0;
 }
